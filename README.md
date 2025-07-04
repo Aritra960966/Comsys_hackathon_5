@@ -128,6 +128,34 @@ The model employs a **dual-path ResNet-based embedding network** that fuses orig
 </p>
 
 ---
+## 🧠 Architectural Details
+
+The model for **Task B: Face Matching** leverages a dual-path architecture built on top of a **ResNet-18 backbone**, with a novel **attention-based fusion** mechanism. This design enables robust comparison between original and distorted facial images. Below are the key components:
+
+- **Backbone:**
+  - A pretrained **ResNet-18** is used as the feature extractor.
+  - The final classification layers are removed to retain high-dimensional convolutional features.
+
+- **Shallow Transform Paths:**
+  - The ResNet features are passed through two parallel transformations:
+    - **Original Path:** `Conv(3×3) → BatchNorm → ReLU → Dropout2D`
+    - **Distortion Simulation Path:** `Conv(1×1) → BatchNorm → ReLU`
+
+- **Attention-Based Fusion:**
+  - The outputs from both transformation paths are stacked and fed to an **attention module**:
+    - `AdaptiveAvgPool → Conv(1×1) → ReLU → Conv(1×1) → Softmax`
+  - The attention mechanism produces weights `α` and `β` that dynamically fuse the feature maps:
+  
+    \[
+    F_{\text{fused}} = \alpha \cdot F_{\text{orig}} + \beta \cdot F_{\text{aug}}
+    \]
+
+- **Projection Head:**
+  - The fused features are **globally average pooled** and passed through:
+    - `Linear → BatchNorm → Dropout`
+  - The output is a **256-dimensional L2-normalized embedding vector**.
+
+This architecture allows the model to adaptively emphasize useful components of the original and distorted features, enhancing robustness across varying input qualities.
 
 ## 🔍 Methodology
 
