@@ -2,7 +2,10 @@
 
 This repository contains the code and architecture for **Task A** of COMSYS Hackathon 5: **Face Detection** using a novel **AMR-CD (Attention-based Multi-Representation for Cross-Domain)** model. The system performs binary classification to determine if a given face belongs to a known identity, even under grayscale or color variations.
 
-![Model Architecture](/image/taska-1.png)
+# Model Architecture
+
+<img src="/image/aska-1.png" alt="AMR-CD Model" width="400"/>
+
 
 ---
 
