@@ -209,11 +209,13 @@ def evaluate_model(model, dataloader, device, threshold=0.5):
     y_true = torch.cat(all_labels).cpu().numpy()
     y_pred = torch.cat(sim_preds).cpu().numpy()
     return {
-        'accuracy': accuracy_score(y_true, y_pred),
-        'precision': precision_score(y_true, y_pred, zero_division=0),
-        'recall': recall_score(y_true, y_pred, zero_division=0),
-        'macro_f1': f1_score(y_true, y_pred, average='macro', zero_division=0)
-    }
+    'accuracy': accuracy_score(y_true, y_pred),
+    'precision': precision_score(y_true, y_pred, zero_division=0),
+    'recall': recall_score(y_true, y_pred, zero_division=0),
+    'f1': f1_score(y_true, y_pred, average='binary', zero_division=0),  
+    'macro_f1': f1_score(y_true, y_pred, average='macro', zero_division=0)
+}
+
 
 def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))

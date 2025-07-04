@@ -51,6 +51,19 @@ Faces may be captured in different modalities — grayscale from old/low-light s
 
 ---
 
+Task A - Training & Evaluation Metrics
+
+The table below summarizes the best training and validation results for the model used in Task A.
+
+| Metric             | Training     | Validation    |
+|--------------------|--------------|---------------|
+| **Loss**           | 0.0444       | 0.2415        |
+| **Accuracy**       | 0.9958       | 0.9621        |
+| **Precision (P)**  | 0.9967       | 0.9659        |
+| **Recall (R)**     | 0.9980       | 0.9842        |
+| **F1 Score**       | 0.9974       | **0.9750**    |
+
+> ✅ The validation F1 score of **0.9750** and Accuracy of **0.9621**
 ## ⚙️ Setup
 
 Ensure Python ≥ 3.7 is installed.
@@ -79,7 +92,7 @@ To run inference on the test dataset using a trained model:
 
 ```bash
 python TaskA_test.py \
-  --model_path TASK_A_MODEL.pth \
+  --model_path TASK_A_MODEL.pt \
   --test_dir /path/to/test \
   --batch_size 32 \
   --save_predictions \
@@ -97,3 +110,111 @@ Print classification metrics (accuracy, precision, recall, F1)
 Save per-image predictions to TaskA_test_results.csv
 
 Save a summary of metrics to TaskA_test_results_summary.csv
+
+
+
+# Task B - Face Matching
+
+This repository contains the code and model architecture for **Task B** of the COMSYS Hackathon 5: **Face Matching**. The system is designed to verify whether two face images—one original and one potentially distorted—belong to the same identity, even under cross-domain conditions such as grayscale or low-quality distortions.
+
+---
+
+## 🧠 Model Architecture
+
+The model employs a **dual-path ResNet-based embedding network** that fuses original and internally simulated distorted features via an **attention mechanism**. This allows the model to learn robust identity embeddings invariant to noise and domain shift.
+
+<p align="center">
+  <img src="image/taskb-1.png" width="400" alt="Face Matching Model Architecture">
+</p>
+
+---
+
+## 🔍 Methodology
+
+### 🔸 Feature Extractor
+- Uses either **ResNet18** or **ResNet50** (configurable).
+- Extracts spatial feature maps from the input image.
+
+### 🔸 Distortion Simulation
+- A 1x1 convolution simulates internal distortions on the extracted feature maps to mimic unseen perturbations during inference.
+
+### 🔸 Attention-Based Fusion
+- Original and distorted features are fused using a **learned attention mechanism**.
+- Attention scores determine how much weight each view contributes.
+
+### 🔸 Embedding Head
+- Applies global average pooling and maps features to a low-dimensional **L2-normalized embedding**.
+- Embeddings are optimized using a **Hybrid Loss** (contrastive + cosine).
+
+### 🔸 Backbones Supported
+- `ResNet18` for default `ResNet50` for alternative structure.
+- A special `AlternativeFaceEmbedder` with **channel** and **spatial attention** layers for advanced robustness.
+
+
+
+## 🧪 Inference Pipeline
+
+The testing pipeline performs pairwise face matching and outputs a similarity score. It supports automatic backbone detection and fallback loading.
+
+### 🧾 Output
+Generates a CSV log with Accuracy, Precision, Recall,F1 and Macro F1-score for each tested model:
+
+Training & Evaluation Metrics
+
+The following table summarizes the best **training** and **validation** performance for both **distance-based** and **similarity-based** approaches during model development.
+
+| Metric             | Training Distance-Based | Validation Distance-Based | Training Similarity-Based | Validation Similarity-Based |
+|--------------------|--------------------------|----------------------------|-----------------------------|------------------------------|
+| **Loss**           | 0.3118                   | 0.0403                     | 0.3118                      | 0.0409                       |
+| **Accuracy**       | 0.9543                   | 0.9754                     | 0.9001                      | 0.9645                       |
+| **Precision (P)**  | 0.9429                   | 0.9841                     | 0.8340                      | 0.9622                       |
+| **Recall (R)**     | 0.9662                   | 0.9878                     | 0.9965                      | 0.9986                       |
+| **F1 Score**       | 0.9544                   | **0.9860**                 | 0.9080                      | 0.9801                       |
+| **Macro F1**       | 0.9543                   | **0.9432**                 | 0.8993                      | 0.9081                       |
+| **AUC**            | 0.9884                   | 0.9884                     | 0.9884                      | 0.9884                       |
+
+> ✅ Best validation F1 and Macro F1 scores are highlighted. Metrics were evaluated using cosine similarity and Euclidean distance at a threshold of 0.5.
+
+## ⚙️ Setup
+
+Ensure Python ≥ 3.7 is installed.
+
+### Install Requirements
+
+```bash
+pip install -r requirements.txt 
+```
+Training
+Set training paths in `config.py`:
+```python
+CONFIG = {
+    'TRAIN_DIR': '/path/to/train',
+    'VAL_DIR': '/path/to/val',
+    ...
+}
+Run training:
+
+``` bash p
+  python train_taskB.py ```
+
+Model checkpoints will be saved in checkpoints/ and the best models in the paths specified by:
+
+### taskB_best_similarity_model.pth
+
+### taskB_best_distance_model.pth
+
+Inference (Evaluation)
+To evaluate on a test dataset:
+
+```bash 
+python TaskB_test.py \
+    --test_dir /path/to/test/data 
+    ```
+
+## Notes
+The system automatically detects and loads either the ResNet18-based model or the ResNet50-based variant at test time.
+
+The attention-based fusion ensures robustness to distortions by dynamically weighting original and augmented paths.
+
+The evaluation script uses cosine similarity by default for F1 computation.
+
