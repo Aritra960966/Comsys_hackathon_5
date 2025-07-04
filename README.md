@@ -226,7 +226,7 @@ CONFIG = {
 Run training:
 
 ```bash
-  python train_taskB.py 
+  python train.py 
   ```
 
 Model checkpoints will be saved in checkpoints/ and the best models in the paths specified by:
