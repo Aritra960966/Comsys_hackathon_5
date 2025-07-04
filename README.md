@@ -51,16 +51,17 @@ Faces may be captured in different modalities — grayscale from old/low-light s
 
 ---
 
-## 📦 Setup
+## ⚙️ Setup
 
-Make sure you have Python ≥ 3.7 installed.
+Ensure Python ≥ 3.7 is installed.
 
-Install dependencies using:
+### Install Requirements
 
 ```bash
-pip install -r requirements.txt```
+pip install -r requirements.txt 
+```
 
-How to Train
+Training
 To train the AMR-CD model from scratch:
 
 ```bash
@@ -70,25 +71,29 @@ python main.py \
   --num_epochs 10 \
   --batch_size 32 \
   --learning_rate 1e-4 \
-  --results_file results.csv ```
+  --results_file results.csv
+  ```
 
-How to Run Inference
+🔍 Inference
+To run inference on the test dataset using a trained model:
+
 ```bash
 python TaskA_test.py \
   --model_path TASK_A_MODEL.pth \
   --test_dir /path/to/test \
   --batch_size 32 \
   --save_predictions \
-  --output_file TaskA_test_results.csv ```
+  --output_file TaskA_test_results.csv
+  ```
 
-### This will:
+## This will:
 
-Load the trained model
+Load the trained AMR-CD model
 
-Evaluate on the test set
+Evaluate the model on the test set
 
-Print classification metrics
+Print classification metrics (accuracy, precision, recall, F1)
 
-Save predictions to TaskA_test_results.csv
+Save per-image predictions to TaskA_test_results.csv
 
-Save summary metrics to TaskA_test_results_summary.csv
+Save a summary of metrics to TaskA_test_results_summary.csv
