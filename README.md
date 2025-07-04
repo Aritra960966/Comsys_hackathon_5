@@ -55,7 +55,7 @@ Make sure you have Python ≥ 3.7 installed.
 Install dependencies using:
 
 ```bash
-pip install -r requirements.txt
+pip install -r requirements.txt```
 
 How to Train
 To train the AMR-CD model from scratch:
