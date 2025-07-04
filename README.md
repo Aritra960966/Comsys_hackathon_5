@@ -71,6 +71,7 @@ Ensure Python ≥ 3.7 is installed.
 ### Install Requirements
 
 ```bash
+cd Task_A
 pip install -r requirements.txt 
 ```
 
@@ -91,6 +92,7 @@ python main.py \
 To run inference on the test dataset using a trained model:
 
 ```bash
+cd Task_A
 python TaskA_test.py \
   --model_path TASK_A_MODEL.pt \
   --test_dir /path/to/test \
@@ -239,6 +241,7 @@ Inference (Evaluation)
 To evaluate on a test dataset:
 
 ```bash
+cd Task_B
 python TaskB_test.py \
     --test_dir /path/to/test/data 
 ```
