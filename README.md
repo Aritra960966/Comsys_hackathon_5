@@ -214,17 +214,20 @@ pip install -r requirements.txt
 ```
 Training
 Set training paths in `config.py`:
-```python
+```bash 
+python
 CONFIG = {
     'TRAIN_DIR': '/path/to/train',
     'VAL_DIR': '/path/to/val',
     ...
-}```
+}
+```
 
 Run training:
 
-``` bash p
-  python train_taskB.py ```
+```bash
+  python train_taskB.py 
+  ```
 
 Model checkpoints will be saved in checkpoints/ and the best models in the paths specified by:
 
@@ -235,10 +238,10 @@ Model checkpoints will be saved in checkpoints/ and the best models in the paths
 Inference (Evaluation)
 To evaluate on a test dataset:
 
-```bash 
+```bash
 python TaskB_test.py \
     --test_dir /path/to/test/data 
-    ```
+```
 
 ## Notes
 The system automatically detects and loads either the ResNet18-based model or the ResNet50-based variant at test time.
