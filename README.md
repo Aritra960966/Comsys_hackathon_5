@@ -4,7 +4,7 @@ This repository contains the code and architecture for **Task A** of COMSYS Hack
 
 # Model Architecture
 
-<img src="/image/aska-1.png" alt="AMR-CD Model" width="400"/>
+<img src="image/taska-1.png" alt="AMR-CD Model" width="400"/>
 
 
 ---
