@@ -219,7 +219,8 @@ CONFIG = {
     'TRAIN_DIR': '/path/to/train',
     'VAL_DIR': '/path/to/val',
     ...
-}
+}```
+
 Run training:
 
 ``` bash p
